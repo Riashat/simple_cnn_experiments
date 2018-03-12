@@ -230,11 +230,10 @@ def modified_vgg_16l(width, height, optimizer, normalization, regularizer):
 if __name__ == "__main__":
     print ("Create train and test dataset")
     parser = argparse.ArgumentParser()
-
-    parser.add_argument("--optimizer", default="ADAM", help="ADAM, RMSProp, SGD, Adagrad")                  # Optimizers
+    parser.add_argument("--optimizer", default="RMSProp", help="ADAM, RMSProp, SGD, Adagrad")                  # Optimizers
     parser.add_argument("--norm", default="Batch", help="Batch Norm, noflag = No Batch Norm")              # Normalizer
     parser.add_argument("--regularizer", default="NoDropout", help="Dropout, noflag = No Dropout on All Layers, just final layer")              # Regularizer
-    parser.add_argument("--early", default="early", help="early, no_early")              # Early Stopping
+    parser.add_argument("--early", default="early", help="early, no_early")              # Regularizer
     args = parser.parse_args()
 
     optimizer = args.optimizer
