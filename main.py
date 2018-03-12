@@ -233,7 +233,7 @@ if __name__ == "__main__":
 
     parser.add_argument("--optimizer", default="ADAM", help="ADAM, RMSProp, SGD, Adagrad")                  # Optimizers
     parser.add_argument("--norm", default="Batch", help="Batch Norm, noflag = No Batch Norm")              # Normalizer
-    parser.add_argument("--regularizer", default="Dropout", help="Dropout, noflag = No Dropout on All Layers, just final layer")              # Regularizer
+    parser.add_argument("--regularizer", default="NoDropout", help="Dropout, noflag = No Dropout on All Layers, just final layer")              # Regularizer
     parser.add_argument("--early", default="early", help="early, no_early")              # Early Stopping
     args = parser.parse_args()
 
