@@ -1,0 +1,29 @@
+Task : 64x64 images - binary classification
+Description of architecture, VGG Networks or can try other networks too
+
+TODO:
+Plot the training, validation and test error
+Record the final training, valid and test performance
+
+Compare hyperparameter settings and report final results 
+of performance on test set
+
+Include analysis :
+Visualizing feature maps
+Visualizing kernels
+Examples where images are clearly misclassified
+Case where classifier predicts around 50% 
+
+Explain the suggestions and improvements that can possibly be made
+
+
+Things to try :
+- Different network architectures
+- Try different optimizers (4 different used) (Done)
+- Early Stopping or not (Done)
+ 
+- Try different feature normalization (Batch Norm, Without Batch Norm,) (Done)
+- Regularizers (Done)
+
+- Auto saving of results (Done)
+
