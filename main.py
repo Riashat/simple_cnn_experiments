@@ -74,19 +74,6 @@ class Logger(object):
                   json.dump(dict(args._get_kwargs()), f)
 
 
-
-
-# def create_logger():
-#     logger = logging.getLogger(__name__)
-#     logger.setLevel(logging.DEBUG)
-#     ch = logging.StreamHandler()
-#     ch.setLevel(logging.DEBUG)
-#     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-#     ch.setFormatter(formatter)
-#     logger.addHandler(ch)
-#     return logger
-
-
 def convert_image_to_data(image, WIDTH, HEIGHT):
     image_resized = Image.open(image).resize((WIDTH, HEIGHT))
     image_array = np.array(image_resized).T
@@ -95,14 +82,14 @@ def convert_image_to_data(image, WIDTH, HEIGHT):
 
 def create_train_test_data(WIDTH, HEIGHT):
 
-    # cat_files = glob.glob("data/train/cat*")
-    # dog_files = glob.glob("data/train/dog*")
+    cat_files = glob.glob("data/train/cat*")
+    dog_files = glob.glob("data/train/dog*")
 
     """
     For simple testing purposes
     """
-    cat_files = glob.glob("data_sample/train/cat*")
-    dog_files = glob.glob("data_sample/train/dog*")
+    # cat_files = glob.glob("data_sample/train/cat*")
+    # dog_files = glob.glob("data_sample/train/dog*")
 
 
     # Restrict cat and dog files here for testing
@@ -132,9 +119,9 @@ def train_model(model, X_data_train, y_target_train, early_stopping):
     if early_stopping == "early":
         early_stopping = EarlyStopping(monitor="loss", patience=3)
         ## nb_epoch = 20
-        data = model.fit(X_data_train, y_target_train, batch_size=32, nb_epoch=2, validation_split=0.2, callbacks=[early_stopping])
+        data = model.fit(X_data_train, y_target_train, batch_size=32, nb_epoch=20, validation_split=0.2, callbacks=[early_stopping])
     elif early_stopping == "no_early":
-        data = model.fit(X_data_train, y_target_train, batch_size=32, nb_epoch=2, validation_split=0.2)
+        data = model.fit(X_data_train, y_target_train, batch_size=32, nb_epoch=20, validation_split=0.2)
 
         
     train_acc = data.history['acc']
@@ -244,11 +231,10 @@ if __name__ == "__main__":
     print ("Create train and test dataset")
     parser = argparse.ArgumentParser()
 
-    ## optimizers and normalizer to be added when defining the keras model
     parser.add_argument("--optimizer", default="ADAM", help="ADAM, RMSProp, SGD, Adagrad")                  # Optimizers
     parser.add_argument("--norm", default="Batch", help="Batch Norm, noflag = No Batch Norm")              # Normalizer
     parser.add_argument("--regularizer", default="Dropout", help="Dropout, noflag = No Dropout on All Layers, just final layer")              # Regularizer
-    parser.add_argument("--early", default="early", help="early, no_early")              # Regularizer
+    parser.add_argument("--early", default="early", help="early, no_early")              # Early Stopping
     args = parser.parse_args()
 
     optimizer = args.optimizer
@@ -257,11 +243,9 @@ if __name__ == "__main__":
     early_stopping = args.early
 
     logger = Logger(experiment_name = optimizer + '_' + normalization + '_' + regularizer + '_' + early_stopping, folder = './results')
-    # logger = Logger(optimizer=optimizer, norm=normalization, regularizer=regularizer, early=early_stopping, folder='./results' )
 
     X_train, X_test, y_train, y_test = create_train_test_data(WIDTH, HEIGHT)
     print("Shape for X_train: " + str(X_train.shape) + " Shape for y_train: " + str(y_train.shape))
-
 
     print("Create the model.")
     model = modified_vgg_16l(WIDTH, HEIGHT, optimizer, normalization, regularizer)
@@ -270,7 +254,6 @@ if __name__ == "__main__":
     # flag=False if no GoogleNet
     trained_model, train_acc, valid_acc, train_loss, valid_loss  = train_model(model, X_train, y_train, early_stopping)
 
-
     print ("Evaluate the model")
     accuracy_score = evaluate_model(trained_model, X_test, y_test)
     print("The accurarcy is " + str(accuracy_score))
@@ -278,12 +261,6 @@ if __name__ == "__main__":
 
     logger.record_data(train_acc, valid_acc, train_loss, valid_loss, accuracy_score)
     logger.save()
-
-    # np.save('./results/' + 'train_acc', np.asarray(train_acc))
-    # np.save('./results/' + 'valid_acc', np.asarray(valid_acc))
-    # np.save('./results/' + 'train_loss', np.asarray(train_loss))
-    # np.save('./results/' + 'valid_loss', np.asarray(valid_loss))
-    # np.save('./results/' + 'train_acc', np.asarray(train_acc))
 
 
 
