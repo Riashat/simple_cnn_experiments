@@ -10,3 +10,6 @@ Download it and create a `data` folder, put `train.zip` and `test.zip` into it.
 
 #### Notes
 - Train VGG16 model : `main.py`
+
+Referene :
+https://github.com/datitran/Dogs-vs-Cats
